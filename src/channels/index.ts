@@ -4,6 +4,7 @@ import './breakout';
 import './cave-story';
 import './desert-bus';
 import './mega-man';
+import './mgs1-codec';
 import './mgs3';
 import './monkey-island';
 import './oregon-trail';
