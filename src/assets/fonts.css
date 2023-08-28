@@ -68,3 +68,17 @@
 	font-family: Reactor7;
 	src: url('fonts/Reactor7.ttf') format('truetype');
 }
+
+@font-face {
+	font-family: DSEG7ClassicMini;
+	src: url('fonts/DSEG7ClassicMini-Regular.woff2');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: DSEG7ClassicMini;
+	src: url('fonts/DSEG7ClassicMini-Bold.woff2');
+	font-weight: bold;
+	font-style: normal;
+}
