@@ -10,6 +10,7 @@ import {volumeBarPathData} from './volume-bar-path-data';
 
 interface VolumeBarCollectionProps {
 	barsData: string[];
+	volumeLevel: number;
 }
 
 registerChannel('MGS1 Codec', 141, Mgs1Codec, {
@@ -42,7 +43,7 @@ function Mgs1Codec(props: ChannelProps) {
 					<DonationDigits isLight={true} isBig={true}>!!1.234</DonationDigits>
 				</DonationBlock>
 				<VolumeBlock>
-					<VolumeBarCollection barsData={volumeBarPathData}/>
+					<VolumeBarCollection barsData={volumeBarPathData} volumeLevel={5}/>
 				</VolumeBlock>
 			</CodecOutline>
 			<TotalEl>
@@ -127,17 +128,17 @@ const VolumeBarCollection = (props: VolumeBarCollectionProps) => {
 		<filter id="volumeBlur">
 			<feGaussianBlur stdDeviation="3" />
 				</filter>
-			{props.barsData.map(VolumeBar)}
+			{props.barsData.map((bar, i) => VolumeBar(bar, i, props.volumeLevel))}
 		</svg>
 	)
 }
 
-const VolumeBar = (path: string) => {
+const VolumeBar = (path: string, barIndex: number, volumeLevel: number) => {
 	return (
 		<path
 		vectorEffect= 'non-scaling-stroke'
 		d= {path}
-		fill= '#223a2e'
+		fill= {barIndex < volumeLevel ?  '#6a9b89' :'#223a2e' }
 		stroke= 'none'
 		filter='url(#volumeBlur)'
 		/>
