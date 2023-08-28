@@ -5,13 +5,13 @@ import { useListenFor, useReplicant } from 'use-nodecg';
 import styled from '@emotion/styled';
 import TweenNumber from '@gdq/lib/components/TweenNumber';
 
-import codecOutlineImage from './codec-outline-image.png';
-import {volumeBarPathData} from './volume-bar-path-data';
+// Channel-specific Components
+import {Container, CodecOutline, ArrowLeft, ArrowRight, GdqText} from './components/StaticComponents';
+import {DonationBlock, DonationDigits} from './components/DonationComponents';
+import {VolumeBlock, VolumeBarCollection} from './components/VolumeComponents';
 
-interface VolumeBarCollectionProps {
-	barsData: string[];
-	volumeLevel: number;
-}
+// Channel-specific Assets
+import {volumeBarPathData} from './assets/volume-bar-path-data';
 
 registerChannel('MGS1 Codec', 141, Mgs1Codec, {
 	position: 'bottomLeft',
@@ -51,98 +51,6 @@ function Mgs1Codec(props: ChannelProps) {
 			</TotalEl>
 		</Container>
 	);
-}
-
-const Container = styled.div`
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	padding: 0;
-	margin: 0;
-`;
-
-const CodecOutline = styled.div`
-	postion: absolute;
-	width: 1084px;
-	height: 320px;
-	background-image: url('${codecOutlineImage}');
-	transform: translate(2px, 6px);
-`;
-
-const ArrowLeft = styled.div`
-	position: absolute;
-	top: 121px;
-	left: 289px;
-	font-size: 20px;
-	color: #253c36;
-`;
-
-const ArrowRight = styled.div`
-	position: absolute;
-	top: 121px;
-	left: 782px;
-	font-size: 20px;
-	color: #253c36;
-`;
-
-const GdqText = styled.div`
-	position: absolute;
-	top: 2px;
-	left: 522px;
-	font-family: gdqpixel;
-	font-size: 20px;
-	color: #253c36;
-`;
-
-const DonationBlock = styled.div`
-	position: absolute;
-	top: 144px;
-	left: 468px;
-`;
-
-const DonationDigits = styled.span<{isLight: boolean, isBig: boolean}>`
-	position: relative;
-	font-family: DSEG7ClassicMini;
-	font-size: 40px;
-	font-size: ${({ isBig }) => isBig ? '40px' : '30px'};
-	font-weight: bold;
-	color: #253c36;
-	color: ${({ isLight }) => isLight ? '#77988c' : '#253c36'};
-`;
-
-const VolumeBlock = styled.div`
-	position: absolute;
-	top: 60px;
-	left: 364px;
-	width: 364px;
-	height: 142px;
-`;
-
-const VolumeBarCollection = (props: VolumeBarCollectionProps) => {
-	return (
-		<svg width='100%'
-		height='100%'
-		viewBox='14 0 1036 610'
-		preserveAspectRatio= 'none'
-		xmlns="http://www.w3.org/2000/svg">
-		<filter id="volumeBlur">
-			<feGaussianBlur stdDeviation="3" />
-				</filter>
-			{props.barsData.map((bar, i) => VolumeBar(bar, i, props.volumeLevel))}
-		</svg>
-	)
-}
-
-const VolumeBar = (path: string, barIndex: number, volumeLevel: number) => {
-	return (
-		<path
-		vectorEffect= 'non-scaling-stroke'
-		d= {path}
-		fill= {barIndex < volumeLevel ?  '#6a9b89' :'#223a2e' }
-		stroke= 'none'
-		filter='url(#volumeBlur)'
-		/>
-	)
 }
 
 const TotalEl = styled.div`
