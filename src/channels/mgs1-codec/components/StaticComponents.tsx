@@ -14,6 +14,7 @@ export const CodecOutline = styled.div`
 	width: 1084px;
 	height: 320px;
 	background-image: url('${codecOutlineImage}');
+    filter: blur(0.8px);
 	transform: translate(2px, 6px);
 `;
 
