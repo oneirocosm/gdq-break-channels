@@ -9,6 +9,7 @@ import TweenNumber from '@gdq/lib/components/TweenNumber';
 import {Container, CodecOutline, ArrowLeft, ArrowRight, GdqText} from './components/StaticComponents';
 import {DonationBlock, DonationDigits} from './components/DonationComponents';
 import {VolumeBlock, VolumeBarCollection} from './components/VolumeComponents';
+import {Portrait} from './components/PortraitComponents';
 
 // Channel-specific Assets
 import {volumeBarPathData} from './assets/volume-bar-path-data';
@@ -45,6 +46,8 @@ function Mgs1Codec(props: ChannelProps) {
 				<VolumeBlock>
 					<VolumeBarCollection barsData={volumeBarPathData} volumeLevel={5}/>
 				</VolumeBlock>
+				<Portrait side='left' character='otacon'/>
+				<Portrait side='right' character='snake'/>
 			</CodecOutline>
 			<TotalEl>
 				$<TweenNumber value={Math.floor(total?.raw ?? 0)} />
