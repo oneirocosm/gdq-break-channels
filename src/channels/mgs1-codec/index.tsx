@@ -2,12 +2,10 @@ import type { FormattedDonation, Total } from '@gdq/types/tracker';
 import { ChannelProps, registerChannel } from '../channels';
 
 import { useListenFor, useReplicant } from 'use-nodecg';
-import styled from '@emotion/styled';
-import TweenNumber from '@gdq/lib/components/TweenNumber';
 
 // Channel-specific Components
 import {Container, CodecOutline, ArrowLeft, ArrowRight, GdqText} from './components/StaticComponents';
-import {DonationBlock, DonationDigits} from './components/DonationComponents';
+import {DonationBlock} from './components/DonationComponents';
 import {VolumeBlock, VolumeBarCollection} from './components/VolumeComponents';
 import {Portrait} from './components/PortraitComponents';
 
@@ -35,35 +33,13 @@ function Mgs1Codec(props: ChannelProps) {
 				<GdqText>GDQ</GdqText>
 				<ArrowLeft>&#9664;</ArrowLeft>
 				<ArrowRight>&#9654;</ArrowRight>
-				<DonationBlock>
-					<DonationDigits isLight={false} isBig={false}>88</DonationDigits>
-					<DonationDigits isLight={false} isBig={true}>.888.888</DonationDigits>
-				</DonationBlock>
-				<DonationBlock>
-					<DonationDigits isLight={true} isBig={false}>!!</DonationDigits>
-					<DonationDigits isLight={true} isBig={true}>!!1.234</DonationDigits>
-				</DonationBlock>
+				<DonationBlock value={total?.raw ?? 0}/>
 				<VolumeBlock>
 					<VolumeBarCollection barsData={volumeBarPathData} volumeLevel={5}/>
 				</VolumeBlock>
 				<Portrait side='left' character='otacon'/>
 				<Portrait side='right' character='snake'/>
 			</CodecOutline>
-			<TotalEl>
-				$<TweenNumber value={Math.floor(total?.raw ?? 0)} />
-			</TotalEl>
 		</Container>
 	);
 }
-
-const TotalEl = styled.div`
-	font-family: gdqpixel;
-	font-size: 46px;
-	color: white;
-
-	position: absolute;
-
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-`;
