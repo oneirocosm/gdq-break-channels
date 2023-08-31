@@ -9,9 +9,6 @@ import {DonationBlock} from './components/DonationComponents';
 import {VolumeBlock, VolumeBarCollection} from './components/VolumeComponents';
 import {Portrait} from './components/PortraitComponents';
 
-// Channel-specific Assets
-import {volumeBarPathData} from './assets/volume-bar-path-data';
-
 registerChannel('MGS1 Codec', 141, Mgs1Codec, {
 	position: 'bottomLeft',
 	site: 'GitHub',
@@ -35,7 +32,7 @@ function Mgs1Codec(props: ChannelProps) {
 				<ArrowRight>&#9654;</ArrowRight>
 				<DonationBlock value={total?.raw ?? 0}/>
 				<VolumeBlock>
-					<VolumeBarCollection barsData={volumeBarPathData} volumeLevel={5}/>
+					<VolumeBarCollection volumeLevel={5}/>
 				</VolumeBlock>
 				<Portrait side='left' character='otacon'/>
 				<Portrait side='right' character='snake'/>

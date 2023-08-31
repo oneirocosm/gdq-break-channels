@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 
+import {volumeBarPathData} from '../assets/volume-bar-path-data';
+
 interface VolumeBarCollectionProps {
-	barsData: string[];
 	volumeLevel: number;
 }
 
@@ -23,7 +24,7 @@ export const VolumeBarCollection = (props: VolumeBarCollectionProps) => {
 		<filter id="volumeBlur">
 			<feGaussianBlur stdDeviation="3" />
 				</filter>
-			{props.barsData.map((bar, i) => VolumeBar(bar, i, props.volumeLevel))}
+			{volumeBarPathData.map((bar, i) => VolumeBar(bar, i, props.volumeLevel))}
 		</svg>
 	)
 }
