@@ -51,10 +51,7 @@ function getMillionsRepr(total: number): string {
     if (millionsNum == 0) {
         return '!!';
     }
-    if (millionsNum < 10) {
-        return '!' + millionsNum;
-    }
-    return millionsNum.toString();
+    return millionsNum.toString().padStart(2, '!');
 }
 
 function getSubMillionsRepr(total: number): string {
@@ -74,7 +71,6 @@ function getSubMillionsRepr(total: number): string {
     if (numDigits > 6) {
         subMillions = splice(subMillions, '.', 0);
     }
-    console.log(subMillions);
 
     return subMillions;
 }
