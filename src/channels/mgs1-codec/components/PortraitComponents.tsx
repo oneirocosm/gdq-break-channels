@@ -11,7 +11,6 @@ interface PortraitProps {
     command: string;
 }
 
-
 const SRC_SPRITE_WIDTH = 52;
 const SRC_SPRITE_HEIGHT = 89;
 const SRC_GUTTER_WIDTH = 8;
@@ -50,10 +49,16 @@ const SPRITE_ACTION_ENUM: Dictionary<number> = {
     'mouth-half': 4,
 };
 
+interface ActivationParams {
+    scale: string,
+    delay: string,
+}
+
 
 export function Portrait(props: PortraitProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [actionFrame, setActionFrame] = useState('normal');
+    const [scaleParams, setScaleParams] = useState<ActivationParams>({scale: '0.0', delay: '0.25s'});
 
     const drawSprite = useCallback( async () => {
         const fullSpriteX = characterSpriteX[props.character];
@@ -93,12 +98,19 @@ export function Portrait(props: PortraitProps) {
         };
         let interval: ReturnType<typeof setTimeout>;
 
-        if (props.command == 'talk') {
-            interval = setInterval(function() {
-                talkSequence();
-            }, 300);
-        } else {
-            setActionFrame('normal');
+        switch (props.command) {
+            case 'activate':
+                setScaleParams({scale: '1.0', delay: '0.25s'})
+                break;
+            case 'deactivate':
+                setScaleParams({scale: '0.0', delay: '0s'})
+                break;
+            case 'talk':
+                interval = setInterval(function() {
+                    talkSequence();
+                }, 300);
+            default:
+                setActionFrame('normal');
         }
 
         return () => {
@@ -114,7 +126,8 @@ export function Portrait(props: PortraitProps) {
             top: '0',
             width: '212px',
             height: '320px',
-            transform: 'scaleY(1.0)',
+            transition: `transform 0.25s ease-out ${scaleParams.delay}`,
+            transform: `scaleY(${scaleParams.scale})`,
         }}>
             <canvas ref={canvasRef}
             width='212px'

@@ -9,6 +9,7 @@ import {Container, CodecOutline, ArrowLeft, ArrowRight, GdqText} from './compone
 import {DonationBlock} from './components/DonationComponents';
 import {VolumeBlock, VolumeBarCollection} from './components/VolumeComponents';
 import {Portrait} from './components/PortraitComponents';
+import {MovingBrackets} from './components/MovingBracketsComponents';
 
 registerChannel('MGS1 Codec', 141, Mgs1Codec, {
 	position: 'bottomLeft',
@@ -21,6 +22,7 @@ function Mgs1Codec(props: ChannelProps) {
 	const [leftCharacter, setLeftCharacter] = useState('otacon');
 	const [leftCommand, setLeftCommand] = useState('closed');
 	const [donoCount, setDonoCount] = useState(0);
+	const bracketCommand = useRef('deactivate');
 
 	useListenFor('donation', (donation: FormattedDonation) => {
 		/**
@@ -31,9 +33,11 @@ function Mgs1Codec(props: ChannelProps) {
 
 	useEffect(() => {
 		if (donoCount % 2 == 0) {
-			setLeftCommand('');
+			setLeftCommand('deactivate');
+			bracketCommand.current = 'deactivate';
 		} else {
-			setLeftCommand('talk');
+			setLeftCommand('activate');
+			bracketCommand.current = 'activate';
 		}
 	}, [donoCount]);
 
@@ -43,6 +47,7 @@ function Mgs1Codec(props: ChannelProps) {
 				<GdqText>GDQ</GdqText>
 				<ArrowLeft>&#9664;</ArrowLeft>
 				<ArrowRight>&#9654;</ArrowRight>
+				<MovingBrackets command={bracketCommand.current}/>
 				<DonationBlock value={total?.raw ?? 0}/>
 				<VolumeBlock>
 					<VolumeBarCollection volumeLevel={5}/>
