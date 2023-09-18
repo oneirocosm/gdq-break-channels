@@ -11,7 +11,7 @@ const OuterWrapper = styled.div`
 `;
 
 const InnerWrapper = styled.div`
-    text-align: justify;
+    text-align: left;
     margin: 0 auto;
     width: max-content;
     max-width: 100%;
