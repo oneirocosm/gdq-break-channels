@@ -6,7 +6,7 @@ interface DonationProps {
     fps?: number
 }
 
-const DonationDigits = styled.span<{isLight: boolean, isBig: boolean}>`
+const DonationDigits = styled.span<{ isLight: boolean, isBig: boolean }>`
 	position: relative;
     padding-right: 2px;
 	font-family: DSEG7ClassicMini;
@@ -28,11 +28,11 @@ export function DonationBlock(props: DonationProps) {
 
     return (
         <div
-        style={{
-	        position: 'absolute',
-	        top: '144px',
-	        left: '468px',
-        }}>
+            style={{
+                position: 'absolute',
+                top: '144px',
+                left: '468px',
+            }}>
             <DonationGroup>
                 <DonationDigits isBig={false} isLight={false}>88</DonationDigits>
                 <DonationDigits isBig={true} isLight={false}>.888.888</DonationDigits>
@@ -63,7 +63,7 @@ function getSubMillionsRepr(total: number): string {
     }
 
     let subMillions = Math.floor(total % 1000000).toString().padStart(6, padChar);
-    
+
     if (numDigits > 3) {
         subMillions = splice(subMillions, '.', 3);
     }

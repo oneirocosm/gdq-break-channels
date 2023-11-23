@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState, useCallback, useReducer } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 import spriteSheet from '../assets/mgs1-codec-portraits.png';
 
-type Dictionary<T> = { [index: string]: T};
+type Dictionary<T> = { [index: string]: T };
 
 interface PortraitProps {
     side: string;
@@ -58,9 +58,9 @@ interface ActivationParams {
 export function Portrait(props: PortraitProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [actionFrame, setActionFrame] = useState('normal');
-    const [scaleParams, setScaleParams] = useState<ActivationParams>({scale: '0.0', delay: '0.25s'});
+    const [scaleParams, setScaleParams] = useState<ActivationParams>({ scale: '0.0', delay: '0.25s' });
 
-    const drawSprite = useCallback( async () => {
+    const drawSprite = useCallback(async () => {
         const fullSpriteX = characterSpriteX[props.character];
         const fullSpriteY = characterSpriteY[props.character];
         const offsetX = SPRITE_ACTION_ENUM[actionFrame] * (SRC_SPRITE_WIDTH + SRC_GUTTER_WIDTH);
@@ -90,23 +90,23 @@ export function Portrait(props: PortraitProps) {
 
 
     useEffect(() => {
-        const talkSequence = function() {
+        const talkSequence = function () {
             setActionFrame('mouth-half');
-            setTimeout(() => {setActionFrame('mouth-open')}, 50);
-            setTimeout(() => {setActionFrame('mouth-half')}, 150);
-            setTimeout(() => {setActionFrame('normal')}, 200);
+            setTimeout(() => { setActionFrame('mouth-open') }, 50);
+            setTimeout(() => { setActionFrame('mouth-half') }, 150);
+            setTimeout(() => { setActionFrame('normal') }, 200);
         };
         let interval: ReturnType<typeof setTimeout>;
 
         switch (props.command) {
             case 'activate':
-                setScaleParams({scale: '1.0', delay: '0.25s'})
+                setScaleParams({ scale: '1.0', delay: '0.25s' })
                 break;
             case 'deactivate':
-                setScaleParams({scale: '0.0', delay: '0s'})
+                setScaleParams({ scale: '0.0', delay: '0s' })
                 break;
             case 'talk':
-                interval = setInterval(function() {
+                interval = setInterval(function () {
                     talkSequence();
                 }, 300);
             default:
@@ -130,32 +130,24 @@ export function Portrait(props: PortraitProps) {
             transform: `scaleY(${scaleParams.scale})`,
         }}>
             <canvas ref={canvasRef}
-            width='212px'
-            height='320px'
-            style={{
-                position: 'absolute',
-                top: '0',
-                left: '0',
-            }}>
+                width='212px'
+                height='320px'
+                style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                }}>
             </canvas>
             <div
-            style={{
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: '100%',
-                boxShadow: 'inset 0px -1px 4px 4px #233d2b, 0 -1px 10px 6px #233d2b',
-            }}>
+                style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    boxShadow: 'inset 0px -1px 4px 4px #233d2b, 0 -1px 10px 6px #233d2b',
+                }}>
             </div>
         </div>
     )
 }
-
-export const Portrait2 = styled.canvas<{side: string}>`
-    position: absolute;
-    top: {};
-    left: ${({side}) => positionsX[side]};
-    width: 212px;
-    height {};
-`;
