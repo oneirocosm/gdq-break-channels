@@ -90,13 +90,15 @@ export function Portrait(props: PortraitProps) {
 
 
     useEffect(() => {
-        const talkSequence = function () {
+
+        const talkSequence = function (timeouts: ReturnType<typeof setTimeout>[]) {
             setActionFrame('mouth-half');
-            setTimeout(() => { setActionFrame('mouth-open') }, 50);
-            setTimeout(() => { setActionFrame('mouth-half') }, 150);
-            setTimeout(() => { setActionFrame('normal') }, 200);
+            timeouts.push(setTimeout(() => { setActionFrame('mouth-open') }, 50));
+            timeouts.push(setTimeout(() => { setActionFrame('mouth-half') }, 150));
+            timeouts.push(setTimeout(() => { setActionFrame('normal') }, 200));
         };
-        let interval: ReturnType<typeof setTimeout>;
+        let interval: ReturnType<typeof setInterval>;
+        let timeouts: ReturnType<typeof setTimeout>[] = [];
 
         switch (props.command) {
             case 'activate':
@@ -107,13 +109,16 @@ export function Portrait(props: PortraitProps) {
                 break;
             case 'talk':
                 interval = setInterval(function () {
-                    talkSequence();
+                    talkSequence(timeouts);
                 }, 300);
             default:
                 setActionFrame('normal');
         }
 
         return () => {
+            for (const timeout of timeouts) {
+                clearTimeout(timeout);
+            }
             clearInterval(interval);
         }
     }, [props.command])

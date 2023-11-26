@@ -13,18 +13,17 @@ import { MovingBrackets } from './components/MovingBracketsComponents';
 import { Mgs1CodecTextBox } from './components/TextBoxComponent';
 import { Mgs1CodecAction, Mgs1CodecInstruction } from './dialogue/dialogue-types';
 
-import { conversations } from './dialogue/dialogue';
-let conversation: Mgs1CodecInstruction[];
-shift_conversation();
+import { conversations as conversationsInit } from './dialogue/dialogue';
 
-function shift_conversation() {
+function shiftConversation(conversations: Mgs1CodecInstruction[][]) {
 	let next = conversations.shift();
 	if (!next) {
 		console.log('Error, no conversations remain');
 		return;
 	}
-	conversation = JSON.parse(JSON.stringify(next)); // deep copy
+	const conversation = JSON.parse(JSON.stringify(next)); // deep copy
 	conversations.push(next);
+	return conversation;
 }
 
 registerChannel('MGS1 Codec', 141, Mgs1Codec, {
@@ -44,6 +43,8 @@ interface MGS1CodecState {
 	};
 	bracketCommand: string;
 	currentLine: string;
+	conversations: Array<Array<Mgs1CodecInstruction>>;
+	conversation: Array<Mgs1CodecInstruction>;
 }
 
 
@@ -98,9 +99,10 @@ function reducer(state: MGS1CodecState, action: Mgs1CodecAction) {
 		case 'endConversation':
 			// doing this separate from deactivating a portrait ensures the
 			// wrong character portrait doesn't display during the closing animation
-			const new__onversation = shift_conversation();
+			const newConversation = shiftConversation(state.conversations);
 			return {
 				...state,
+				conversation: newConversation,
 			}
 		default:
 			// do nothing
@@ -115,12 +117,13 @@ const mgs1CodecStateInit: MGS1CodecState = {
 	action: { left: '', right: '' },
 	bracketCommand: 'deactivate',
 	currentLine: '',
+	conversations: JSON.parse(JSON.stringify(conversationsInit)),
+	conversation: [],
 }
 
 function mgs1CodecInitializer(mgs1CodecState: MGS1CodecState) {
-	if (mgs1CodecState != mgs1CodecStateInit) {
-		mgs1CodecState = mgs1CodecStateInit;
-	}
+	mgs1CodecState = mgs1CodecStateInit;
+	mgs1CodecState.conversation = shiftConversation(mgs1CodecState.conversations);
 	return mgs1CodecState
 }
 
@@ -137,7 +140,7 @@ function Mgs1Codec(props: ChannelProps) {
 	});
 
 	useEffect(() => {
-		const nextInstruction = conversation.shift();
+		const nextInstruction = state.conversation.shift();
 		if (!nextInstruction) {
 			return
 		}
