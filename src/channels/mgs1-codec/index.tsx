@@ -11,8 +11,21 @@ import { VolumeBlock, VolumeBarCollection } from './components/VolumeComponents'
 import { Portrait } from './components/PortraitComponents';
 import { MovingBrackets } from './components/MovingBracketsComponents';
 import { Mgs1CodecTextBox } from './components/TextBoxComponent';
+import { Mgs1CodecAction, Mgs1CodecInstruction } from './dialogue/dialogue-types';
 
-import { conversation } from './dialogue/dialogue';
+import { conversations } from './dialogue/dialogue';
+let conversation: Mgs1CodecInstruction[];
+shift_conversation();
+
+function shift_conversation() {
+	let next = conversations.shift();
+	if (!next) {
+		console.log('Error, no conversations remain');
+		return;
+	}
+	conversation = JSON.parse(JSON.stringify(next)); // deep copy
+	conversations.push(next);
+}
 
 registerChannel('MGS1 Codec', 141, Mgs1Codec, {
 	position: 'bottomLeft',
@@ -32,33 +45,6 @@ interface MGS1CodecState {
 	bracketCommand: string;
 	currentLine: string;
 }
-
-export type Mgs1CodecInstruction = {
-	delayMs: number;
-	content: Mgs1CodecAction;
-}
-
-export type Mgs1CodecAction =
-	| {
-		type: 'talkStart',
-		position: 'left' | 'right',
-		text: string,
-	}
-	| {
-		type: 'talkStop',
-		position: 'left' | 'right',
-	}
-	| {
-		type: 'portraitSet',
-		position: 'left' | 'right',
-		character: string,
-	}
-	| {
-		type: 'portraitActivate',
-	}
-	| {
-		type: 'portraitDeactivate',
-	}
 
 
 function reducer(state: MGS1CodecState, action: Mgs1CodecAction) {
@@ -109,6 +95,13 @@ function reducer(state: MGS1CodecState, action: Mgs1CodecAction) {
 				},
 				bracketCommand: 'deactivate',
 			}
+		case 'endConversation':
+			// doing this separate from deactivating a portrait ensures the
+			// wrong character portrait doesn't display during the closing animation
+			const new__onversation = shift_conversation();
+			return {
+				...state,
+			}
 		default:
 			// do nothing
 			break;
@@ -148,7 +141,10 @@ function Mgs1Codec(props: ChannelProps) {
 		if (!nextInstruction) {
 			return
 		}
-		setTimeout(() => dispatch(nextInstruction.content), nextInstruction.delayMs);
+		let timeout = setTimeout(() => dispatch(nextInstruction.content), nextInstruction.delayMs);
+		return () => {
+			clearTimeout(timeout);
+		}
 
 	}, [state]);
 

@@ -29,7 +29,7 @@ const characterSpriteX: Dictionary<number> = {
     'meryl': 1986,
     'campbell': 386,
     'naomi': 726,
-    'mei ling': 1296,
+    'mei-ling': 1296,
 };
 
 const characterSpriteY: Dictionary<number> = {
@@ -38,7 +38,7 @@ const characterSpriteY: Dictionary<number> = {
     'meryl': 904,
     'campbell': 44,
     'naomi': 44,
-    'mei ling': 44,
+    'mei-ling': 44,
 };
 
 const SPRITE_ACTION_ENUM: Dictionary<number> = {

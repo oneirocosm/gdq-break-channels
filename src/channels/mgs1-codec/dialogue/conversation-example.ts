@@ -1,5 +1,4 @@
-
-import { Mgs1CodecAction, Mgs1CodecInstruction } from '../index';
+import { Mgs1CodecInstruction } from './dialogue-types';
 export const conversation: Mgs1CodecInstruction[] = [
     {
         delayMs: 0,
@@ -81,6 +80,18 @@ export const conversation: Mgs1CodecInstruction[] = [
         content: {
             type: 'talkStop',
             position: 'right',
+        },
+    },
+    {
+        delayMs: 2000,
+        content: {
+            type: 'portraitDeactivate',
+        },
+    },
+    {
+        delayMs: 2000,
+        content: {
+            type: 'endConversation',
         },
     },
 ]
